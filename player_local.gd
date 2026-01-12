@@ -1,9 +1,20 @@
 extends CharacterBody2D
 class_name PlayerLocal
+var inventory: Dictionary = {}
+
+signal inventory_changed(inventory: Dictionary)
+
 const MOVE_SPEED: float = 200
 var player_id: int = randi_range(100000, 999999)
 var player_color: Color = Color.from_hsv(randf(), 0.5, 1.0)
 
+func add_creature(creature_id: String) -> void:
+	var new_count = inventory.get(creature_id, 0) + 1
+	inventory[creature_id] = new_count
+	inventory_changed.emit(get_inventory())
+
+func get_inventory() -> Dictionary:
+	return inventory.duplicate(true)
 func _ready() -> void:
 	%PlayerSprite.modulate = player_color
 	%PlayerLabel.text = str(player_id)
