@@ -43,7 +43,8 @@ func _send_local_player() -> void:
 		"player_id": player.player_id,
 		"position_x": player.global_position.x,
 		"position_y": player.global_position.y,
-		"color": player.player_color.to_html(false)
+		"color": player.player_color.to_html(false),
+		"inventory": player.get_inventory()
 		#"timestamp": Time.get_unix_time_from_system(),
 	}
 
