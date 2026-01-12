@@ -1,0 +1,31 @@
+[gd_scene load_steps=7 format=3 uid="uid://bdnsm6eoxrqe1"]
+
+[ext_resource type="Texture2D" uid="uid://csjmeost3yt8e" path="res://icon.svg" id="1_f3sb7"]
+[ext_resource type="Script" uid="uid://dnr2uekn5iphv" path="res://player_local.gd" id="1_fj7yv"]
+[ext_resource type="Script" uid="uid://bt7e6qhsvced2" path="res://player_local_sync.gd" id="4_036b0"]
+[ext_resource type="Script" uid="uid://bin0csj6xnemh" path="res://player_remote_sync.gd" id="4_aqk2v"]
+[ext_resource type="PackedScene" uid="uid://dyi4gux1defb0" path="res://player_remote.tscn" id="4_dwbse"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fj7yv"]
+size = Vector2(134, 131)
+
+[node name="World" type="Node2D"]
+
+[node name="PlayerLocal" type="CharacterBody2D" parent="."]
+script = ExtResource("1_fj7yv")
+
+[node name="Sprite2D" type="Sprite2D" parent="PlayerLocal"]
+texture = ExtResource("1_f3sb7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerLocal"]
+position = Vector2(1, -1.5)
+shape = SubResource("RectangleShape2D_fj7yv")
+
+[node name="PlayerRemoteSync" type="Node" parent="." node_paths=PackedStringArray("player_local")]
+script = ExtResource("4_aqk2v")
+player_remote_scene = ExtResource("4_dwbse")
+player_local = NodePath("../PlayerLocal")
+
+[node name="HTTPRequest" type="HTTPRequest" parent="." node_paths=PackedStringArray("player")]
+script = ExtResource("4_036b0")
+player = NodePath("../PlayerLocal")
