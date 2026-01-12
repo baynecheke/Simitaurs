@@ -19083,6 +19083,7 @@ offset_left = -564.0
 offset_top = -303.0
 offset_right = -248.0
 offset_bottom = -202.0
+text = "BackPack"
 
 [node name="InventoryPanel" type="Panel" parent="InventoryUI"]
 unique_name_in_owner = true
