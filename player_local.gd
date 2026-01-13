@@ -4,17 +4,27 @@ var inventory: Dictionary = {}
 
 signal inventory_changed(inventory: Dictionary)
 
-const MOVE_SPEED: float = 200
+const MOVE_SPEED: float = 600
 var player_id: int = randi_range(100000, 999999)
 var player_color: Color = Color.from_hsv(randf(), 0.5, 1.0)
 
-func add_creature(creature_id: String) -> void:
-	var new_count = inventory.get(creature_id, 0) + 1
-	inventory[creature_id] = new_count
+func add_creature(creature_data: Dictionary) -> void:
+	var id := str(creature_data.get("id", "unknown"))
+	if not inventory.has(id):
+		inventory[id] = []
+	(inventory[id] as Array).append(creature_data.duplicate(true))
 	inventory_changed.emit(get_inventory())
+
+# Helper you’ll want later:
+func get_all_creatures() -> Array:
+	var out: Array = []
+	for id in inventory.keys():
+		out.append_array(inventory[id])
+	return out
 
 func get_inventory() -> Dictionary:
 	return inventory.duplicate(true)
+	
 func _ready() -> void:
 	%PlayerSprite.modulate = player_color
 	%PlayerLabel.text = str(player_id)

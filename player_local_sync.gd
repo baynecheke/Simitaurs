@@ -9,7 +9,8 @@ var prev_player_data_json: String
 func _ready() -> void:
 	get_tree().set_auto_accept_quit(false)
 	request_completed.connect(_on_request_completed)
-
+	if player != null:
+		player.inventory_changed.connect(_on_inventory_changed)
 func _notification(what) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		_delete_local_player()
@@ -27,10 +28,11 @@ func _on_request_completed(
 	_headers: PackedStringArray,
 	_body: PackedByteArray,
 ) -> void:
+	
 	if result != RESULT_SUCCESS:
 		printerr("request failed with result %d" % result)
 	is_request_pending = false
-
+	
 func _process(_delta: float) -> void:
 	#update_timer += _delta
 	#if update_timer >= UPDATE_RATE:
@@ -57,3 +59,7 @@ func _send_local_player() -> void:
 
 	is_request_pending = true
 	request(url, [], HTTPClient.METHOD_PUT, player_data_json)
+func _on_inventory_changed(_inv: Dictionary) -> void:
+	# Send immediately when inventory changes
+	if not is_request_pending:
+		_send_local_player()
