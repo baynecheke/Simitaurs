@@ -28,6 +28,7 @@ func get_inventory() -> Dictionary:
 func _ready() -> void:
 	%PlayerSprite.modulate = player_color
 	%PlayerLabel.text = str(player_id)
+	$CombatArea.owner_player_id = player_id
 	_set_random_spawn()
 
 func _set_random_spawn() -> void:
@@ -46,3 +47,5 @@ func _physics_process(delta: float) -> void:
 	else:
 		velocity = Vector2.ZERO
 	move_and_slide()
+func get_player_id() -> int:
+	return player_id

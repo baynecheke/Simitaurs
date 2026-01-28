@@ -7,12 +7,25 @@ class_name ChatUI
 @onready var chat_log: RichTextLabel = $Root/Panel/VBox/Scroll/ChatLog
 @onready var chat_input: LineEdit = $Root/Panel/VBox/ChatInput
 @onready var scroll: ScrollContainer = $Root/Panel/VBox/Scroll
-
 signal message_submitted(text: String)
 
 var _history: Array[Dictionary] = []
 
 func _ready() -> void:
+	chat_log.bbcode_enabled = true
+
+	# Force loud visible color
+	chat_log.add_theme_color_override("default_color", Color(1, 0, 1, 1)) # hot magenta
+	chat_log.modulate = Color(1, 1, 1, 1)
+	chat_log.self_modulate = Color(1, 1, 1, 1)
+
+	# Force it to show all characters
+	chat_log.visible_characters = -1
+
+
+	chat_log.text = "ASDF visible test\nSecond line test"
+	print("ChatUI _ready fired")
+	chat_log.bbcode_enabled = true
 	chat_log.text = "[b]UI test[/b]\n"
 	chat_log.bbcode_enabled = true
 	chat_log.fit_content = true

@@ -26,23 +26,29 @@ func _listen_loop() -> void:
 			_reconnect_delay = min(_reconnect_delay * 2.0, RECONNECT_DELAY_MAX)
 		else:
 			_reconnect_delay = 1.0
-
 func _listen_once() -> bool:
 	var tcp := await _setup_tcp_stream()
 	if tcp == null:
 		return false
+
 	var tls := await _setup_tls_stream(tcp)
 	if tls == null:
 		return false
+
 	_start_sse_stream(tls)
 
 	while true:
 		var response := await _read_stream_response(tls)
 		if response == "":
 			return false
+
 		var events := _parse_response_event_data(response)
 		for e in events:
 			_emit_messages_from_put(e)
+
+	# Should never reach, but keeps the compiler happy
+	return false
+
 
 func _setup_tcp_stream() -> StreamPeerTCP:
 	var tcp := StreamPeerTCP.new()
@@ -131,9 +137,12 @@ func _parse_event_data(event_str: String) -> EventData:
 func _parse_response_event_data(response: String) -> Array[Dictionary]:
 	_buffer += response
 	_buffer = _buffer.replace("\r", "")
-	var parts := _buffer.split("\n\n")
+	var parts := _buffer.split("\n\n")  # this is PackedStringArray
+
 	if not _buffer.ends_with("\n\n"):
-		_buffer = parts.pop_back()
+		var last_index := parts.size() - 1
+		_buffer = parts[last_index]
+		parts.remove_at(last_index)
 	else:
 		_buffer = ""
 
@@ -146,6 +155,7 @@ func _parse_response_event_data(response: String) -> Array[Dictionary]:
 			continue
 		out.append(ev.data)
 	return out
+	
 
 func _emit_messages_from_put(event: Dictionary) -> void:
 	# Firebase event looks like: { "path": "...", "data": <dict or null> }
