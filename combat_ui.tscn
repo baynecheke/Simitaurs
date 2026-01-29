@@ -1,0 +1,33 @@
+[gd_scene load_steps=2 format=3 uid="uid://dy8ftoa5qv5fi"]
+
+[ext_resource type="Script" uid="uid://kvfq6sw7d1af" path="res://combat_ui.gd" id="1_jn67q"]
+
+[node name="CombatUI" type="CanvasLayer"]
+script = ExtResource("1_jn67q")
+
+[node name="RequestButton" type="Button" parent="."]
+offset_left = 442.0
+offset_top = -65.0
+offset_right = 635.0
+offset_bottom = 66.0
+text = "RequestButton"
+
+[node name="IncomingPanel" type="Panel" parent="."]
+offset_left = -150.0
+offset_top = -71.0
+offset_right = 88.0
+offset_bottom = 81.0
+
+[node name="AcceptButton" type="Button" parent="IncomingPanel"]
+layout_mode = 0
+offset_right = 102.0
+offset_bottom = 150.0
+text = "AcceptButton"
+
+[node name="DeclineButton" type="Button" parent="IncomingPanel"]
+layout_mode = 0
+offset_left = 143.0
+offset_top = -2.0
+offset_right = 240.0
+offset_bottom = 152.0
+text = "DeclineButton"
