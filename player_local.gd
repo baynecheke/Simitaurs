@@ -56,3 +56,4 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 func get_player_id() -> int:
 	return player_id
+#ilikesimitauir
