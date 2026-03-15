@@ -34,11 +34,11 @@ func _on_request_completed(
 	is_request_pending = false
 	
 func _process(_delta: float) -> void:
-	#update_timer += _delta
-	#if update_timer >= UPDATE_RATE:
-		#update_timer = 0.0
-	if not is_request_pending:
-		_send_local_player()
+	update_timer += _delta
+	if update_timer >= UPDATE_RATE:
+		update_timer = 0.0
+		if not is_request_pending:
+			_send_local_player()
 
 func _send_local_player() -> void:
 	var player_data = {

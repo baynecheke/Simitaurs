@@ -9,7 +9,7 @@ var player_id: int = randi_range(100000, 999999)
 var player_color: Color = Color.from_hsv(randf(), 0.5, 1.0)
 
 func add_creature(creature_data: Dictionary) -> void:
-	var id := str(creature_data.get("id", "unknown"))
+	var id := str(creature_data.get("type", "unknown"))
 	if not inventory.has(id):
 		inventory[id] = []
 	(inventory[id] as Array).append(creature_data.duplicate(true))
@@ -44,8 +44,15 @@ func _physics_process(delta: float) -> void:
 	if dx != 0 or dy != 0:
 		var dir = Vector2(dx, dy).normalized()
 		velocity = dir * MOVE_SPEED
+		# Play the appropriate walk animation
+		if abs(dx) > abs(dy):
+			%PlayerSprite.play("walk_forward")
+			%PlayerSprite.flip_h = dx < 0
+		else:
+			%PlayerSprite.play("walk_forward" if dy > 0 else "walk_backward")
 	else:
 		velocity = Vector2.ZERO
+		%PlayerSprite.play("idle")
 	move_and_slide()
 func get_player_id() -> int:
 	return player_id

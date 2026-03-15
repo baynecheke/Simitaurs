@@ -14,24 +14,25 @@ func _ready() -> void:
 	area_exited.connect(_on_area_exited)
 
 func _on_area_entered(area: Area2D) -> void:
-	# We expect the area to be another "CombatArea" attached to a player
+	print("CombatArea detected an entering area: ", area.name)
+	
 	var parent_node = area.get_parent()
 	
 	if parent_node == null:
+		print("FAILED: parent_node is null")
 		return
 		
-	# Duck-typing: Check if the parent has the function we need
-	# Your PlayerLocal has this function. Ensure PlayerRemote has it too.
 	if not parent_node.has_method("get_player_id"):
+		print("FAILED: parent_node (", parent_node.name, ") does not have 'get_player_id' method")
 		return
 		
 	var other_id: int = parent_node.get_player_id()
 	
-	# Prevent detecting ourselves
 	if other_id == owner_player_id:
+		print("IGNORED: Detected ourselves")
 		return
 		
-	# Tell the manager we found someone
+	print("SUCCESS: Found another player with ID: ", other_id)
 	touching_player.emit(other_id)
 
 func _on_area_exited(area: Area2D) -> void:

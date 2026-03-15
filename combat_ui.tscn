@@ -6,17 +6,17 @@
 script = ExtResource("1_jn67q")
 
 [node name="RequestButton" type="Button" parent="."]
-offset_left = 442.0
-offset_top = -65.0
-offset_right = 635.0
-offset_bottom = 66.0
+offset_left = 1136.0
+offset_top = 215.0
+offset_right = 1329.0
+offset_bottom = 346.0
 text = "RequestButton"
 
 [node name="IncomingPanel" type="Panel" parent="."]
-offset_left = -150.0
-offset_top = -71.0
-offset_right = 88.0
-offset_bottom = 81.0
+offset_left = 544.0
+offset_top = 209.0
+offset_right = 782.0
+offset_bottom = 361.0
 
 [node name="AcceptButton" type="Button" parent="IncomingPanel"]
 layout_mode = 0

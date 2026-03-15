@@ -1,7 +1,7 @@
 extends Node
 const EVENT_TYPE_PREFIX = "event: "
 const EVENT_DATA_PREFIX = "data: "
-var http_client:= HTTPClient.new()
+
 @export var player_remote_scene: PackedScene
 @export var player_local: PlayerLocal
 var players_remote: Dictionary = {}
@@ -19,34 +19,7 @@ func _start_listening() -> void:
 		for event in events:
 			_handle_player_event(event)
 	
-func _setup_connection() -> void:
-	http_client.connect_to_host(FirebaseUrls.HOST)
-	var status = http_client.get_status()
-	while status in [HTTPClient.STATUS_CONNECTING, HTTPClient.STATUS_RESOLVING]:
-		http_client.poll()
-		status = http_client.get_status()
-	if status != HTTPClient.STATUS_CONNECTED:
-		printerr("Cannot connect to Firebase: %d" % status)
-		return
-	http_client.request(
-		HTTPClient.METHOD_POST,
-		FirebaseUrls._get_all_players_url(),
-		["Accept: text/event-stream"]
-	)
-	print("Connection success")
 
-func _process(_delta: float) -> void:
-	_check_for_new_events()
-	
-func _check_for_new_events() -> void:
-	http_client.poll()
-	if not http_client.has_response():
-		return
-	var body = http_client.read_response_body_chunk()
-	if not body:
-		return
-	var response = body.get_string_from_utf8()
-	print(response)
 	
 func _setup_tcp_stream() -> StreamPeerTCP:
 	var tcp = StreamPeerTCP.new()
@@ -161,6 +134,7 @@ func _delete_player(player_id: String):
   
 	var player = players_remote[player_id] as PlayerRemote
 	player.queue_free()
+	players_remote.erase(player_id) # <--- ADD THIS LINE
 
 func _handle_player_event(event: Dictionary):
 	var path = event["path"] as String

@@ -45,8 +45,14 @@ func _on_body_entered(body: Node) -> void:
 		# Emit FULL data so PlayerLocal can store everything.
 		if _collected_lock:
 			return
-		collected.emit(_build_creature_data())
-		mark_collected()
+		if try_catch() == true:
+			print("true")
+			collected.emit(_build_creature_data())
+			mark_collected()
+		else:
+			await get_tree().create_timer(2.0).timeout
+			print("two seconds later")
+			return
 
 func mark_collected() -> void:
 	monitoring = false
@@ -57,7 +63,30 @@ func mark_collected() -> void:
 func _start_respawn_timer() -> void:
 	await get_tree().create_timer(respawn_delay).timeout
 	_respawn_random()
+	
+func try_catch():
 
+
+	var chance = 0.5
+	var roll = randf()
+
+	if roll <= chance:
+		catch_success()
+		return true
+	else:
+		catch_failed()
+		return false
+
+
+func catch_success():
+	print("success")
+	return true
+
+
+func catch_failed():
+	print("Simitaur escaped!")
+	return false
+	
 func _respawn_random() -> void:
 	# Move somewhere random
 	var x = randf_range(spawn_area_min.x, spawn_area_max.x)
