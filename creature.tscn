@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://do0lsu1awewg6"]
 
 [ext_resource type="Script" uid="uid://b5kfd2cu81w3c" path="res://creature.gd" id="1_nugsn"]
-[ext_resource type="Texture2D" uid="uid://c7jnl5g8y3eae" path="res://simitair.png.png" id="2_nugsn"]
+[ext_resource type="Texture2D" uid="uid://ceoknxdetbtr" path="res://pixel-art (2) (2).png" id="2_nugsn"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_nugsn"]
 radius = 70.45
